@@ -38,7 +38,7 @@ def find_agent_init() -> str | None:
 
     home_dir = Path.home()
 
-    # Priority 1: pipx venv (Hermes instalat prin pipx)
+    # Priority 1: pipx venv (Hermes installed via pipx)
     pipx_venvs = home_dir / ".local/share/pipx/venvs"
     if pipx_venvs.exists():
         for pyver in ["3.12", "3.11", "3.10", "3.13"]:

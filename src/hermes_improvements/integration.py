@@ -110,9 +110,9 @@ def initialize_hermes_improvements(
 
     components = {}
 
-    # 1. Vector Memory Store (cu prag de RAM)
+    # 1. Vector Memory Store (with RAM threshold)
     try:
-        # Prag RAM minim: 2GB liberi pentru SentenceTransformer
+        # Minimum RAM threshold: 2GB free for SentenceTransformer
         _free_ram = 0
         try:
             with open('/proc/meminfo') as _f:
