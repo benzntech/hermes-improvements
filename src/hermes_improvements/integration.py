@@ -123,8 +123,8 @@ def initialize_hermes_improvements(
         except Exception:
             pass
 
-        if _free_ram < 2048:  # < 2GB liberi
-            logger.warning("⚠️ VectorMemory: doar %d MB RAM liber (prag minim 2048 MB) — dezactivat", _free_ram)
+        if _free_ram < 2048:  # < 2GB free
+            logger.warning("⚠️ VectorMemory: only %d MB free RAM (min threshold 2048 MB) — disabled", _free_ram)
             components["vector_store"] = None
         else:
             from improvements.vector_memory import VectorMemoryStore
@@ -619,7 +619,7 @@ def patch_agent_for_improvements(agent_instance):
                 elif c_val == "complex":
                     target_model = "gemini-3.1-pro-low"
                 
-                # Auto-routing dezactivat temporar (config.yaml este imutabil chattr +i)
+                # Auto-routing bypassed (uncomment to enable dynamic model switching)
                 # agent_instance.model = target_model
                 logger.info("🔄 [Bypassed] Auto-routing: task complexity [%s] -> Target would be [%s]", c_val.upper(), target_model)
         except Exception as e:

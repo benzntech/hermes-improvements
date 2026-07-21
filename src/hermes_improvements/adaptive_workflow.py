@@ -105,8 +105,8 @@ class AdaptiveWorkflow:
         r"\b(multiple files?|several|all|every)\b.*\b(file|module|component)\b",
         r"\b(production|security|critical|breaking)\b",
         r"\b(analyze|investigate|diagnose|debug)\b.*\b(complex|deep|thorough)\b",
-        # Română — cu \w* pentru forme flexionare (securitatea, producția, etc.)
-        # deploy e deja in pattern EN (linia 104), nu-l duplicam aici
+        # Romanian — with \w* for inflected forms (securitatea, producția, etc.)
+        # deploy is already in EN pattern (line 104), not duplicated here
         r"\b(review|audit|migrare|refactorizare|repozitor)\w*\b",
         r"\b(mai multe|toate|fiecare)\b.*\b(fișier[e]?|modul[e]?|funcții?|component[a-ză]?)\b",
         r"\b(producție|securitate|critic|avarie|protecție)\w*\b",
@@ -119,7 +119,7 @@ class AdaptiveWorkflow:
         r"\b(explain|describe|summarize|document)\b",
         r"\b(configure|set up|install|setup)\b",
         r"\b(compare|versus|vs\.?)\b",
-        # Română — cu context (verb + obiect)
+        # Romanian — with context (verb + object)
         r"\b(creează|construiește|implementează|generează|scrie)\b.*\b(script|funcții?|clasă|pagină|site|teste?|aplicație)\b",
         r"\b(test[e]?|testare|verific[ăa])\b",
         r"\b(caută|găsește|cercetează|caut)\b",
@@ -128,7 +128,7 @@ class AdaptiveWorkflow:
         r"\b(compară|versus|diferență)\b",
         r"\b(fă|făcut|execută|rulează|creează)\b",
         r"\b(cum|de ce|care|ce fel)\b",
-        # Română — verbe standalone cu obiect simplu (scrie un X, fă un Y)
+        # Romanian — standalone verbs with simple object (write a X, do a Y)
         r"\b(scrie|fă|creează|adaugă|șterge|modifică|trimite|rezolvă)\b\s+\w+",
     ]
 
@@ -137,7 +137,7 @@ class AdaptiveWorkflow:
         r"\b(thanks|thank you|ok|okay|got it|noted)\b",
         r"^(what|who|when|where)\b.*\?$",
         r"^\w+$",  # Single word
-        # Română
+        # Romanian
         r"^(salut|bună|noroc|servus|hei)\b",
         r"\b(mersi|mulțumesc|ok|bine|notat|înțeles)\b",
         r"^(ce|cine|când|unde)\b.*\?$",
@@ -264,7 +264,7 @@ class AdaptiveWorkflow:
             r"\b\d+\b.*\bstep[s]?\b",
             r"\b(?:after|before|next|finally|lastly)\b.*\b(when|once)\b",
             r"\blist\b.*\bstep[s]?\b",
-            # Română — două verbe de acțiune legate prin "și" / virgulă
+            # Romanian — two action verbs connected by "și" (and) / comma
             rf"\b({self._RO_ACTION_VERBS})\b.{{0,60}}(?:și|,)\s*(?:{self._RO_ACTION_VERBS})\b",
             r"\b(paș[i]?|etapă|etape)\b.*\d+",
             r"\b\d+\b.*\b(paș[i]?|etapă|etape)\b",

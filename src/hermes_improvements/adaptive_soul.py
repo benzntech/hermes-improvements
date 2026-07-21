@@ -63,9 +63,9 @@ class AdaptiveSoul:
         self.feedback_log_path = self.soul_dir / "soul_feedback.jsonl"
         self.rules_path = self.soul_dir / "soul_adaptive_rules.json"
 
-        self.max_rules = 30  # Număr maxim de reguli salvate
-        self.rule_ttl_days = 30  # Regulile expiră după 30 zile
-        self.max_rules_in_prompt = 8  # Maxim 8 reguli în prompt (deja existent)
+        self.max_rules = 30  # Maximum number of saved rules
+        self.rule_ttl_days = 30  # Rules expire after 30 days
+        self.max_rules_in_prompt = 8  # Max 8 rules injected into prompt
 
         self.feedback_history: List[BehaviorFeedback] = []
         self.adaptive_rules: Dict[str, AdaptiveRule] = {}
@@ -248,7 +248,7 @@ class AdaptiveSoul:
     def _persist_rules(self):
         """Save adaptive rules to JSON, with limits and expiration."""
         try:
-            # 1. Șterge reguli expirate (>30 zile)
+            # 1. Remove expired rules (>30 days)
             now = time.time()
             cutoff = now - (self.rule_ttl_days * 86400)
             expired = [
@@ -258,18 +258,18 @@ class AdaptiveSoul:
             for name in expired:
                 del self.adaptive_rules[name]
             if expired:
-                logger.info("AdaptiveSoul: șterse %d reguli expirate (>%d zile)", len(expired), self.rule_ttl_days)
+                logger.info("AdaptiveSoul: removed %d expired rules (>%d days)", len(expired), self.rule_ttl_days)
 
-            # 2. Păstrează doar primele N reguli (sortate după prioritate)
+            # 2. Keep only top N rules (sorted by priority)
             sorted_rules = sorted(
                 self.adaptive_rules.items(),
                 key=lambda x: (-x[1].priority, -x[1].confidence)
             )
             self.adaptive_rules = dict(sorted_rules[:self.max_rules])
             if len(sorted_rules) > self.max_rules:
-                logger.info("AdaptiveSoul: trunchiate %d reguli la max %d", len(sorted_rules), self.max_rules)
+                logger.info("AdaptiveSoul: truncated %d rules to max %d", len(sorted_rules), self.max_rules)
 
-            # 3. Salvează
+            # 3. Save
             rules_dict = {
                 name: asdict(rule) for name, rule in self.adaptive_rules.items()
             }
@@ -302,7 +302,7 @@ class AdaptiveSoul:
         if not concrete:
             return ""
 
-        lines = ["\n## Reguli învățate din feedback (aplică OBLIGATORIU)"]
+        lines = ["\n## Learned rules from feedback (apply MANDATORY)"]
         for instruction in concrete:
             lines.append(f"- {instruction}")
 
@@ -316,22 +316,22 @@ class AdaptiveSoul:
         instructions = []
         seen = set()
 
-        # Keyword → concrete rule mapping (RO + EN)
+        # Keyword → concrete rule mapping (multilingual: RO + EN)
         rule_map = [
             (["engleză", "english", "nu engleză", "română", "roman"],
-             "Răspunde DOAR în română. Nu folosi engleză sub nicio formă."),
+             "Respond ONLY in the user's preferred language. Do not switch languages."),
             (["scurt", "mai scurt", "prea mult text", "verbose", "lung", "concis"],
-             "Răspunsuri SCURTE și directe. Fără explicații inutile, fără padding."),
+             "Keep responses SHORT and direct. No unnecessary explanations or padding."),
             (["emoji", "emoticon"],
-             "Nu folosi emoji-uri în răspunsuri."),
+             "Do not use emojis in responses."),
             (["bold", "**", "formatare", "markdown", "headers", "titluri"],
-             "Evită formatarea excesivă (bold, headers). Folosește text simplu."),
+             "Avoid excessive formatting (bold, headers). Use plain text."),
             (["salut", "bun", "drag", "imi place", "îmi place", "bravo", "bine"],
-             "Continuă stilul curent — primit feedback pozitiv."),
+             "Continue current style — received positive feedback."),
             (["repeta", "repetă", "din nou", "iarăși", "tot timpul"],
-             "Nu repeta informații deja cunoscute. Fii direct la subiect."),
+             "Do not repeat already known information. Get straight to the point."),
             (["cod", "code", "script", "python", "bash"],
-             "Furnizează cod complet și funcțional, nu doar fragmente."),
+             "Provide complete and functional code, not just fragments."),
         ]
 
         for fb in self.feedback_history[-30:]:  # last 30 feedback items
@@ -349,7 +349,7 @@ class AdaptiveSoul:
                 if len(fb.text) < 80 and not any(
                     c in fb.text for c in ["test", "Test", "Prima", "A doua", "concurență"]
                 ):
-                    instructions.append(f"Corectare directă: {fb.text}")
+                    instructions.append(f"Direct correction: {fb.text}")
                     seen.add(fb.text)
 
         return instructions[:8]  # max 8 rules in prompt

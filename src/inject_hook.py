@@ -86,7 +86,7 @@ def _find_function_end(lines: list[str], func_def_prefix: str) -> int | None:
     index of the last line that is still indented (inside the function body).
     Returns None if the function is not found.
     """
-    # Găsește începutul funcției
+    # Find the beginning of the function
     start_idx = None
     for i, line in enumerate(lines):
         if line.strip().startswith(func_def_prefix):
@@ -96,12 +96,12 @@ def _find_function_end(lines: list[str], func_def_prefix: str) -> int | None:
     if start_idx is None:
         return None
 
-    # Găsește prima linie după start_idx cu indentare 0 (sfârșitul funcției)
+    # Find the first line after start_idx with indent 0 (end of function)
     for i in range(start_idx + 1, len(lines)):
         stripped = lines[i].strip()
         if stripped and not lines[i].startswith(' ') and not lines[i].startswith('\t'):
-            # Prima linie neindentată după funcție = s-a terminat
-            # Ultima linie a funcției e i-1
+            # First unindented line after function = function ended
+            # Last line of the function is i-1
             return i - 1
 
     return len(lines) - 1
