@@ -171,8 +171,8 @@ def main():
         print("[improvements] Hook already present — nothing to do")
 
     # Verify improvements package can be imported
-    hermes_home = os.environ.get("HERMES_HOME", "/home/ubuntu/.hermes")
-    sys.path.insert(0, hermes_home)
+    hermes_dir = Path(os.environ.get("HERMES_HOME", Path.home() / ".hermes")).expanduser().resolve()
+    sys.path.insert(0, str(hermes_dir))
     try:
         import improvements
         print(f"[improvements] ✅ Package found: {improvements.__file__}")

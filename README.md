@@ -31,6 +31,15 @@ It introduces dynamic vector-backed memory retrieval, adaptive persona alignment
 
 ---
 
+## 📋 Requirements
+
+- **Python:** `>= 3.10`
+- **Memory:** `≥ 2 GB RAM` (if using `sentence-transformers` embeddings)
+- **Optional Dependencies:**
+  - `sentence-transformers` & `numpy` (for vector semantic search; falls back to TF-IDF if omitted)
+
+---
+
 ## 🚀 Installation & Setup
 
 ### 1. Prerequisites
@@ -55,8 +64,15 @@ python3 src/inject_hook.py
 ### 4. Verify Installation
 Check if the improvements package is initialized properly:
 ```bash
-python3 -c "import sys; sys.path.insert(0, '/home/$USER/.hermes'); import improvements; print(improvements.__version__)"
+python3 -c "import sys, os; sys.path.insert(0, os.path.expanduser('~/.hermes')); import improvements; print(improvements.__version__)"
 ```
+
+---
+
+## 💡 Troubleshooting & Notes
+
+- **Upgrades:** Running `python3 src/inject_hook.py` is safe to run after every `pip install --upgrade hermes-agent` or `git pull`. It checks if the hook is already present before modifying `agent_init.py`.
+- **Platform Support:** Full support for Linux and macOS. Windows environments gracefully fall back when file-locking is unavailable.
 
 ---
 
