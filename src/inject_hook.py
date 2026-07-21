@@ -36,7 +36,7 @@ def find_agent_init() -> str | None:
     """Find agent_init.py in site-packages or pipx venv."""
     import glob
 
-    home_dir = Path("/home/ubuntu")
+    home_dir = Path.home()
 
     # Priority 1: pipx venv (Hermes instalat prin pipx)
     pipx_venvs = home_dir / ".local/share/pipx/venvs"
