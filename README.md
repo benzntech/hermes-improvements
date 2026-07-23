@@ -31,6 +31,22 @@ It introduces dynamic vector-backed memory retrieval, adaptive persona alignment
 
 ---
 
+## 📉 Token & Cost Reduction (How it Works)
+
+Normally, Hermes Agent loads **your entire memory file** (all custom rules, preferences, and details) into the System Prompt of every single message. As your memory grows, your system prompt bloats, wasting thousands of tokens per turn and skyrocketing your API costs.
+
+This package solves this through two main optimizations:
+
+1. **Semantic Memory Selection (Vector Search)**:
+   - Instead of injecting the entire memory dump, `VectorMemoryStore` indexes your memories using local embeddings (via `sentence-transformers` or a lightweight TF-IDF fallback).
+   - On each message, it performs a quick search and **only injects the 1-3 memories relevant to your current prompt** (e.g., retrieving your TV setup details only when you talk about Stremio).
+
+2. **Preserving Prompt Caching**:
+   - Because the bulk of inactive memories is kept out of the prompt, the system prompt stays stable.
+   - This allows LLM providers (like Google Gemini or Anthropic Claude) to hit **100% Prompt Cache** on repetitive turns. You only pay for processing new messages, saving up to 50-80% on API bills.
+
+---
+
 ## 📋 Requirements
 
 - **Python:** `>= 3.10`
