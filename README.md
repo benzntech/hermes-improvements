@@ -1,5 +1,10 @@
 # Hermes Improvements Package (v2.0.0)
 
+[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Hermes Agent Supported](https://img.shields.io/badge/Hermes%20Agent-Compatible-8A2BE2.svg)](https://github.com/NousResearch/hermes-agent)
+[![Stars](https://img.shields.io/github/stars/rednicv/hermes-improvements?style=social)](https://github.com/rednicv/hermes-improvements)
+
 An architectural enhancement suite for [Hermes Agent](https://github.com/NousResearch/hermes-agent) by Nous Research. 
 
 It introduces dynamic vector-backed memory retrieval, adaptive persona alignment, real-time reasoning tracing, and intelligent multi-provider task classification without breaking per-conversation prompt caching.
