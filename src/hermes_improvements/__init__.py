@@ -19,9 +19,15 @@ from .dynamic_memory import DynamicMemoryContext, AdaptiveMemoryPrefetch
 from .adaptive_soul import AdaptiveSoul, StyleLearner
 from .adaptive_workflow import AdaptiveWorkflow
 from .reasoning_trace import ReasoningTracer, SourceAttribution, UncertaintyManager
-from .integration import initialize_hermes_improvements, patch_agent_for_improvements
+from .integration import (
+    build_turn_context_block,
+    detect_turn_feedback,
+    get_agent_stats,
+    initialize_hermes_improvements,
+    patch_agent_for_improvements,
+)
 
-__version__ = "2.0.0"
+__version__ = "3.0.0"
 __all__ = [
     "VectorMemoryStore",
     "DynamicMemoryContext",
@@ -34,4 +40,7 @@ __all__ = [
     "UncertaintyManager",
     "initialize_hermes_improvements",
     "patch_agent_for_improvements",
+    "build_turn_context_block",
+    "detect_turn_feedback",
+    "get_agent_stats",
 ]
