@@ -54,7 +54,7 @@ BASELINE = snapshot(GUARDED)
 TMP = Path(tempfile.mkdtemp(prefix="v3test_"))
 (TMP / "memories").mkdir(parents=True)
 (TMP / "memories" / "MEMORY.md").write_text(
-    "Backup-ul pe Buffalo ruleaza zilnic la 03:00 prin cron.\n"
+    "Backup-ul pe remote-backup-node ruleaza zilnic la 03:00 prin cron.\n"
     "§Skill-urile stau in ~/.hermes/skills grupate pe categorii.\n",
     encoding="utf-8",
 )
@@ -164,7 +164,7 @@ def main():
     from improvements.vector_memory import VectorMemoryStore
 
     vs = VectorMemoryStore(HERMES / "memories")
-    mem = AdaptiveMemoryPrefetch(vs).prefetch_relevant("cum merge backup-ul pe Buffalo?", max_entries=3)
+    mem = AdaptiveMemoryPrefetch(vs).prefetch_relevant("cum merge backup-ul pe remote-backup-node?", max_entries=3)
     check("prefetch gaseste memorii", len(mem) > 0, f"{len(mem)} entries")
 
     holder = FakeAgent()
