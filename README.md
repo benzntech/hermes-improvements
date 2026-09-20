@@ -38,7 +38,8 @@ In previous versions (v2.x), the integration hook attempted to wrap `agent.handl
 ## 🌟 Key Features
 
 1. **VectorMemoryStore (`vector_memory.py`)**
-   - High-performance local semantic search over user memories using embeddings (`sentence-transformers` all-MiniLM-L6-v2 or TF-IDF fallback).
+   - High-performance local semantic search over user memories using embeddings (`sentence-transformers` default `all-MiniLM-L6-v2`, multilingual models, or TF-IDF fallback).
+   - Configurable model via `HERMES_EMBEDDING_MODEL` environment variable (e.g. `paraphrase-multilingual-MiniLM-L12-v2` for 50+ languages).
    - Enables fast context lookup without bloating the primary prompt window.
 
 2. **DynamicMemoryContext & Prefetch (`dynamic_memory.py`)**

@@ -112,7 +112,8 @@ class VectorMemoryStore:
 
     # ─── Embedding ────────────────────────────────────────────────────
 
-    _MODEL_PATH = str(Path.home() / ".semantic_search/models/all-MiniLM-L6-v2")
+    _DEFAULT_MODEL = str(Path.home() / ".semantic_search/models/all-MiniLM-L6-v2")
+    _MODEL_PATH = os.environ.get("HERMES_EMBEDDING_MODEL", _DEFAULT_MODEL)
     _model = None  # lazy-loaded, shared across instances
 
     @classmethod
