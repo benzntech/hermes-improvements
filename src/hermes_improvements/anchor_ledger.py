@@ -110,6 +110,20 @@ class AnchorLedger:
     def compute_hash(content: str) -> str:
         return hashlib.sha256(content.encode("utf-8", errors="ignore")).hexdigest()[:16]
 
+    @staticmethod
+    def extract_figures_from_text(text: str) -> Dict[str, Any]:
+        """
+        Auto-extract prices, currencies, and percentages from raw text if explicit figures aren't passed.
+        """
+        import re
+        figures = {}
+        # Match price patterns like $5, $5/GB, $0.20/GB, $7.50 per 1M events, 20%
+        matches = re.findall(r"(\\\$\d+(?:\.\d+)?|\$\d+(?:\.\d+)?(?:\/(?:GB|MB|event|1M events|mo|yr|user|month|year))?|\b\d+(?:\.\d+)?%\b)", text)
+        if matches:
+            for idx, match in enumerate(matches[:5]):
+                figures[f"figure_{idx+1}"] = match
+        return figures
+
     def record_probe(
         self,
         url: str,
@@ -125,6 +139,8 @@ class AnchorLedger:
         """
         now = time.time()
         key_figures = key_figures or {}
+        if not key_figures and content:
+            key_figures = self.extract_figures_from_text(content)
         content_hash = self.compute_hash(content) if content else ""
 
         if claim_class is None:
