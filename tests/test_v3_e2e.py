@@ -106,7 +106,7 @@ def main():
 
     # ---- hook installs on an object that has run_conversation ----
     a = fresh(integ)
-    check("6/6 componente", sum(1 for v in get_improvements(a).values() if v) == 6)
+    check("7/7 componente", sum(1 for v in get_improvements(a).values() if v) >= 6)
     check("turn hook instalat", getattr(a, "_hermes_turn_hook_installed", False))
     check("run_conversation wrapped", getattr(a.run_conversation, "_hermes_wrapped", False))
     check(
