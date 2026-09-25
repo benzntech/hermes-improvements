@@ -269,6 +269,16 @@ def initialize_hermes_improvements(
         logger.warning("Failed to init reasoning tracer: %s", e)
         components["reasoning_tracer"] = None
 
+    # 6. Anchor Ledger (Web Evidence & Drift Store)
+    try:
+        from improvements.anchor_ledger import AnchorLedger
+        al = AnchorLedger(hermes_home / "memories")
+        components["anchor_ledger"] = al
+        logger.info("✅ Anchor ledger initialized")
+    except Exception as e:
+        logger.warning("Failed to init anchor ledger: %s", e)
+        components["anchor_ledger"] = None
+
     # Attach to agent instance
     agent_instance._hermes_improvements = components
     agent_instance._hermes_home = hermes_home
@@ -642,6 +652,16 @@ def build_turn_context_block(
             lines.append(f"- [{key}] {text[:220]}")
         if len(lines) > 1:
             sections.append("\n".join(lines))
+
+    # 5. Verified Anchor Evidence
+    al = improvements.get("anchor_ledger")
+    if al:
+        try:
+            anchor_block = al.format_context_block(max_entries=3)
+            if anchor_block:
+                sections.append(anchor_block)
+        except Exception as e:
+            logger.warning("Anchor ledger formatting failed: %s", e)
 
     if not sections:
         return ""
